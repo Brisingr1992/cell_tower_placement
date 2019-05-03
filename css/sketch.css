@@ -1,0 +1,20 @@
+html,
+body {
+  height: 100%;
+  overflow:hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar {
+  height: 7vh;
+}
+
+.sketchContent {
+  height: 93vh;
+}
+
+button.disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
