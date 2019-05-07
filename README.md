@@ -1,2 +1,2 @@
-# K-Centers-Problem-implementation
-This the K-Center problem implementation
+# Cell Tower Placement Problems
+This the Cell Tower Placement Problem algorithm implementation.
