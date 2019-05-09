@@ -16,22 +16,23 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-        <a class="navbar-brand" href="#">Approx k centers</a>
+        <a class="navbar-brand" href="#">Cell Tower Placement</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <a id="legendArbCenters" class="navbar-brand" href="#" style="opacity: 0">Arb.Centers: 0</a>
         <a id="legendCities" class="navbar-brand" href="#" style="display:inline-block;float: none;">Cities: 0</a>
-        <a id="legendArbCenters" class="navbar-brand" href="#">Arb.Centers: 0</a>
-        <a id="legendAlgCenters" class="navbar-brand" href="#">Alg.Centers: 0</a>
+        <a id="legendAlgCenters" class="navbar-brand" href="#">Towers: 0</a>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto nav-pills">
+
                 <li class="nav-item">
-                    <button id="algoTypeButton" class="btn btn-primary" type="button">K-Center</button>
+                    <button id="modeButton" class="btn btn-light" type="button" style="opacity: 0">City Mode</button>
                 </li>
                 &nbsp;&nbsp;&nbsp;
                 <li class="nav-item">
-                    <button id="modeButton" class="btn btn-light" type="button">City Mode</button>
+                    <button id="algoTypeButton" class="btn btn-primary" type="button">K-Center</button>
                 </li>
                 &nbsp;&nbsp;&nbsp;
                 <li class="nav-item">

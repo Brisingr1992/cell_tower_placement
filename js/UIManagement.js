@@ -113,7 +113,7 @@ UIManagement = {
         UIManagement.showingAlert = true;
 
 		ElementsManagement.clearAllElements();
-
+		location.reload();
         /*Swal.fire({
             title: 'Clean sketch',
             text: "What elements clear?",
