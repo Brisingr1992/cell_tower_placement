@@ -111,7 +111,10 @@ UIManagement = {
 
     clearPageOnClick: () => {
         UIManagement.showingAlert = true;
-        Swal.fire({
+
+		ElementsManagement.clearAllElements();
+
+        /*Swal.fire({
             title: 'Clean sketch',
             text: "What elements clear?",
             input: 'select',
@@ -146,6 +149,6 @@ UIManagement = {
                         'success').then( () => UIManagement.showingAlert = false)
                 }else
                     UIManagement.showingAlert = false;
-          })
+          })*/
     }
 }
