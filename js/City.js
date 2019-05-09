@@ -5,13 +5,20 @@ class City {
         this.y = yPoint;
         this.radius = 25;
         this.active = false;
-        this.col = color(0,0,255); 
+        this.col = color(0,0,255);
+        this.population = Math.floor(Math.random() * 1000000) + 1  ;
     }
 
     display(){
         fill(this.col);
         ellipse(this.x, this.y, this.radius, this.radius);
-        let coordinatesText = '('+this.x+','+this.y+')';
+		let coordinatesText = '('+this.x+','+this.y+')';
+
+		let showPopulation = UIManagement.selectedAlgoType === "kMedian";
+		if(showPopulation){
+			coordinatesText = '('+this.x+','+this.y+','+this.population+')';
+		}
+
         fill(0)
         text(coordinatesText, this.x-this.radius, this.y-this.radius);
     }

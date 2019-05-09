@@ -3,30 +3,37 @@ UIManagement = {
     legendAlgCenters: null,
     legendCities: null,
     modeButton: null,
+    algoTypeButton: null,
+    selectedAlgoType:"kCenter",
     runAlgorithmButton: null,
     clearPageButton: null,
     cityMode: true,
     arbCenterMode: false,
     algCenterMode: false,
     showingAlert: false,
-    modeButtonClassEnum:{city:"btn btn-primary", arbCenter:"btn btn-success", algCenter:"btn btn-danger"},
-    modeButtonText:{city:"City mode", arbCenter:"Arb.Center mode", algCenter:"Alg.Center mode"},
-    
-    getUIreferences: async function (){
-        return new Promise((resolve,reject) => {
+    modeButtonClassEnum: {city: "btn btn-light", arbCenter: "btn btn-success", algCenter: "btn btn-danger"},
+    modeButtonText: {city: "City mode", arbCenter: "Arb.Center mode", algCenter: "Alg.Center mode"},
+    algoTypeButtonClassEnum: {kCenter: "btn btn-primary", kMedian: "btn btn-success", voronoi: "btn btn-danger"},
+    algoTypeButtonText: {kCenter: "K-Center", kMedian: "K-Median", voronoi: "Voronoi"},
+
+    getUIreferences: async function () {
+        return new Promise((resolve, reject) => {
             UIManagement.legendArbCenters = $("#legendArbCenters")[0].firstChild;
             UIManagement.legendAlgCenters = $("#legendAlgCenters")[0].firstChild;
             UIManagement.legendCities = $("#legendCities")[0].firstChild;
 
             UIManagement.modeButton = $("#modeButton");
-            UIManagement.modeButton[0].onclick = UIManagement.modeManagementClick;
-            
+            // UIManagement.modeButton[0].onclick = UIManagement.modeManagementClick;
+
+			UIManagement.algoTypeButton = $("#algoTypeButton");
+			UIManagement.algoTypeButton[0].onclick = UIManagement.algoTypeManagementClick;
+
             UIManagement.runAlgorithmButton = $("#runAlgorithmButton");
             UIManagement.runAlgorithmButton[0].onclick = UIManagement.runAlgorithmOnClick;
-            
+
             UIManagement.clearPageButton = $("#clearPageButton");
             UIManagement.clearPageButton[0].onclick = UIManagement.clearPageOnClick;
-            
+
             resolve();
         })
     },
@@ -36,7 +43,7 @@ UIManagement = {
             UIManagement.modeButton[0].className = UIManagement.modeButtonClassEnum.arbCenter;
             UIManagement.modeButton[0].textContent = UIManagement.modeButtonText.arbCenter;
 
-            UIManagement.cityMode = !UIManagement.cityMode; 
+            UIManagement.cityMode = !UIManagement.cityMode;
             UIManagement.arbCenterMode = !UIManagement.arbCenterMode;
         }else if(UIManagement.modeButton[0].className == UIManagement.modeButtonClassEnum.arbCenter){
             UIManagement.modeButton[0].className = UIManagement.modeButtonClassEnum.algCenter;
@@ -54,11 +61,27 @@ UIManagement = {
         }
     },
 
+	algoTypeManagementClick: () => {
+		if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.kCenter) {
+			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.kMedian;
+			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.kMedian;
+			UIManagement.selectedAlgoType = "kMedian";
+		} else if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.kMedian) {
+			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.voronoi;
+			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.voronoi;
+			UIManagement.selectedAlgoType = "voronoi";
+		} else {
+			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.kCenter;
+			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.kCenter;
+			UIManagement.selectedAlgoType = "kCenter";
+		}
+	},
+
     runAlgorithmOnClick: () =>{
         UIManagement.showingAlert = true;
 
         Swal.fire({
-            title: 'Submit number of centers',
+            title: 'Submit number of towers',
             input: 'number',
             inputPlaceholder: '1,2,3 ...',
             inputAttributes: {
@@ -69,8 +92,18 @@ UIManagement = {
             confirmButtonText: 'Run algorithm',
           }).then((result) => {
             if (result.value) {
-                ElementsManagement.centersNumber = result.value; 
-                approxWithoutRAlgorithm()
+                ElementsManagement.centersNumber = result.value;
+
+                switch (UIManagement.selectedAlgoType) {
+					case "kMedian":
+						// approxWithKMedianAlgorithm();
+						approxWithoutRAlgorithm();
+						break;
+
+					default:
+						approxWithoutRAlgorithm();
+
+				}
             }
             UIManagement.showingAlert = false;
           })

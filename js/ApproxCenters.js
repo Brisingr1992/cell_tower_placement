@@ -220,3 +220,18 @@ function findNearestCenters(arrayCenters){
 
   return nearestCenter;
 }
+
+function makeClustering(allCities, centersNumber) {
+
+}
+
+
+function approxWithKMedianAlgorithm() {
+	ElementsManagement.algorithmCenters.length = 0;
+	let centersNumber = ElementsManagement.centersNumber;
+	let allCities = ElementsManagement.cities;
+
+	let aCityClusters = makeClustering(allCities, centersNumber);
+
+
+}
