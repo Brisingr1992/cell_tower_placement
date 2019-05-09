@@ -1,4 +1,4 @@
-var sketchContainer = null;
+let sketchContainer = null;
 
 async function setup(){
   await UIManagement.getUIreferences();
@@ -221,17 +221,153 @@ function findNearestCenters(arrayCenters){
   return nearestCenter;
 }
 
-function makeClustering(allCities, centersNumber) {
+
+function makeGraph(allCities) {
+	let aGraphData = [];
+
+	for(let i=0; i<allCities.length; i++){
+		let cityA = allCities[i];
+		for(let j=i+1; j<allCities.length;j++){
+			let cityB = allCities[j];
+			let tempDist = dist(cityA.x, cityA.y, cityB.x, cityB.y);
+			aGraphData.push([i,j,tempDist]);
+		}
+	}
+
+	return aGraphData;
+}
+
+function createAdjMatrix(V, G) {
+	let adjMatrix = [];
+	for (let i = 0; i < V; i++) {
+		adjMatrix.push([]);
+		for (let j = 0; j < V; j++) { adjMatrix[i].push(0); }
+	}
+	for (let i = 0; i < G.length; i++) {
+		adjMatrix[G[i][0]][G[i][1]] = G[i][2];
+		adjMatrix[G[i][1]][G[i][0]] = G[i][2];
+	}
+	return adjMatrix;
+}
+
+function findMST(allCities) {
+	let G = makeGraph(allCities);
+	let centersNumber = ElementsManagement.cities.length;
+
+	let adjMatrix = createAdjMatrix(centersNumber, G);
+
+	// arbitrarily choose initial vertex from graph
+	let vertex = 0;
+
+	// initialize empty edges array and empty MST
+	let MST = [];
+	let edges = [];
+	let visited = [];
+	let minEdge = [null,null,Infinity];
+
+	// run prims algorithm until we create an MST
+	// that contains every vertex from the graph
+	while (MST.length !== centersNumber-1) {
+
+		// mark this vertex as visited
+		visited.push(vertex);
+
+		// add each edge to list of potential edges
+		for (let r = 0; r < centersNumber; r++) {
+			if (adjMatrix[vertex][r] !== 0) {
+				edges.push([vertex,r,adjMatrix[vertex][r]]);
+			}
+		}
+
+		// find edge with the smallest weight to a vertex
+		// that has not yet been visited
+		for (let e = 0; e < edges.length; e++) {
+			if (edges[e][2] < minEdge[2] && visited.indexOf(edges[e][1]) === -1) {
+				minEdge = edges[e];
+			}
+		}
+
+		// remove min weight edge from list of edges
+		edges.splice(edges.indexOf(minEdge), 1);
+
+		// push min edge to MST
+		MST.push(minEdge);
+
+		// start at new vertex and reset min edge
+		vertex = minEdge[1];
+		minEdge = [null,null,Infinity];
+
+	}
+
+	return MST;
 
 }
 
+function findDisconnectedGraphs(graph) {
+	let aComponents = [];
+
+	for(let i=0; i<graph.length; i++){
+		let [a,b,d] = graph[i];
+		let bInserted = false;
+
+		//if edge matches with another group then add it in or create new group
+		for(let j=0; j< aComponents.length; j++){
+			let aGroup = aComponents[j];
+			if(aGroup.includes(a) || aGroup.includes(b)){
+				aGroup = Array.from(new Set(aGroup.concat([a,b])));
+				aComponents[j] = aGroup;
+				bInserted = true;
+				break;
+			}
+		}
+
+		if(!bInserted){
+			aComponents.push([a,b]);
+		}
+	}
+
+	return aComponents;
+}
+
+function handleClusterMaking(allCities, centersNumber) {
+	let MST = findMST(allCities);
+
+	let aSortedMST = MST.sort(([a1, b1, d1], [a2, b2, d2]) => d2 - d1);
+
+	let iEdgesToRemove = centersNumber - 1;
+	aSortedMST.splice(0, iEdgesToRemove);
+
+	return findDisconnectedGraphs(aSortedMST);
+}
+
+function generateWeightedMedianCenters(aCityClusters) {
+	let aAllCities = ElementsManagement.cities;
+
+	aCityClusters.forEach(aCluster=>{
+		let cSumXP = 0;
+		let cSumYP = 0;
+		let iSumP = 0;
+		aCluster.forEach(sCity=>{
+			let oCityData = aAllCities[Number(sCity)];
+			cSumXP += oCityData.x * oCityData.population;
+			cSumYP += oCityData.y * oCityData.population;
+			iSumP += oCityData.population;
+		})
+
+		let tmpNewCenterX = Math.floor(cSumXP/iSumP);
+		let tmpNewCenterY = Math.floor(cSumYP/iSumP);
+
+		let newCenter = ElementsManagement.addAlgorithmCenter(tmpNewCenterX, tmpNewCenterY);
+		newCenter.display();
+	});
+}
 
 function approxWithKMedianAlgorithm() {
 	ElementsManagement.algorithmCenters.length = 0;
 	let centersNumber = ElementsManagement.centersNumber;
 	let allCities = ElementsManagement.cities;
 
-	let aCityClusters = makeClustering(allCities, centersNumber);
-
+	let aCityClusters = handleClusterMaking(allCities, centersNumber);
+	generateWeightedMedianCenters(aCityClusters)
 
 }

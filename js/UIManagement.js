@@ -96,8 +96,8 @@ UIManagement = {
 
                 switch (UIManagement.selectedAlgoType) {
 					case "kMedian":
-						// approxWithKMedianAlgorithm();
-						approxWithoutRAlgorithm();
+						approxWithKMedianAlgorithm();
+						// approxWithoutRAlgorithm();
 						break;
 
 					default:
