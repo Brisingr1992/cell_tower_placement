@@ -13,8 +13,20 @@ UIManagement = {
     showingAlert: false,
     modeButtonClassEnum: {city: "btn btn-light", arbCenter: "btn btn-success", algCenter: "btn btn-danger"},
     modeButtonText: {city: "City mode", arbCenter: "Arb.Center mode", algCenter: "Alg.Center mode"},
-    algoTypeButtonClassEnum: {kCenter: "btn btn-primary", centerOfGravity: "btn btn-success", lloyd: "btn btn-info", simpleMedian:"btn btn-light"},
-    algoTypeButtonText: {kCenter: "K-Center", centerOfGravity: "Center Of Gravity", lloyd: "lloyd-kmeans", simpleMedian: "Simple Median"},
+    algoTypeButtonClassEnum: {
+        kCenter: "btn btn-primary",
+        centerOfGravity: "btn btn-success",
+        lloyd: "btn btn-info",
+        simpleMedian:"btn btn-light",
+        voronoi: 'btn btn-default'
+    },
+    algoTypeButtonText: {
+        kCenter: "K-Center",
+        centerOfGravity: "Center Of Gravity",
+        lloyd: "lloyd-kmeans",
+        simpleMedian: "Simple Median",
+        voronoi: 'voronoi-kmeans'
+    },
 
     getUIreferences: async function () {
         return new Promise((resolve, reject) => {
@@ -74,7 +86,11 @@ UIManagement = {
 			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.lloyd;
 			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.lloyd;
 			UIManagement.selectedAlgoType = "lloyd-kmeans";
-		} else {
+        } else if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.lloyd) {
+            UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.voronoi;
+			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.voronoi;
+			UIManagement.selectedAlgoType = "voronoi";
+        } else {
 			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.kCenter;
 			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.kCenter;
 			UIManagement.selectedAlgoType = "kCenter";
@@ -107,6 +123,9 @@ UIManagement = {
 						break;
                     case 'lloyd-kmeans':
                         approxWithLloydAlgorithm();
+                        break;
+                    case 'voronoi':
+                        approxWithVoronoiAlgorithm();
                         break;
 					default:
 						approxWithoutRAlgorithm();

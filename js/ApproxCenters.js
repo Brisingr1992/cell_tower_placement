@@ -463,3 +463,23 @@ function generateCentersSimpleMedianAlgorithm(aCityClusters) {
 		newCenter.display();
 	});
 }
+
+function approxWithVoronoiAlgorithm() {
+  ElementsManagement.algorithmCenters.length = 0;
+	let centersNumber = ElementsManagement.centersNumber;
+  let allCities = ElementsManagement.cities;
+
+  let voronoi = new Voronoi();
+  let bbox = {xl: 0, xr: sketchContainer.elt.clientWidth, yt: 0, yb: sketchContainer.elt.clientHeight};
+  let diagram = voronoi.compute(allCities, bbox);
+
+  const data = allCities.map(city => [city.x, city.y, city.population]);
+  Voronoi_kmeans.cluster(data, centersNumber);
+
+  Voronoi_kmeans.centroids.map(point => {
+    let newCenter = ElementsManagement.addAlgorithmCenter(point[0], point[1]);
+    newCenter.display();
+
+    return point;
+  });
+}
