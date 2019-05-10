@@ -97,7 +97,6 @@ UIManagement = {
                 switch (UIManagement.selectedAlgoType) {
 					case "centerOfGravity":
 						approxWithCenterOfGravityAlgorithm();
-						// approxWithoutRAlgorithm();
 						break;
                     case 'lloyd-kmeans':
                         approxWithLloydAlgorithm();
