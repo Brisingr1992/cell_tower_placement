@@ -14,7 +14,7 @@ class City {
         ellipse(this.x, this.y, this.radius, this.radius);
 		let coordinatesText = '('+this.x+','+this.y+')';
 
-		let showPopulation = UIManagement.selectedAlgoType === "kMedian";
+		let showPopulation = UIManagement.selectedAlgoType === "centerOfGravity";
 		if(showPopulation){
 			coordinatesText = '('+this.x+','+this.y+','+this.population+')';
 		}

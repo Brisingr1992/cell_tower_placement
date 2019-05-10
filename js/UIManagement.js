@@ -13,8 +13,8 @@ UIManagement = {
     showingAlert: false,
     modeButtonClassEnum: {city: "btn btn-light", arbCenter: "btn btn-success", algCenter: "btn btn-danger"},
     modeButtonText: {city: "City mode", arbCenter: "Arb.Center mode", algCenter: "Alg.Center mode"},
-    algoTypeButtonClassEnum: {kCenter: "btn btn-primary", kMedian: "btn btn-success", lloyd: "btn btn-info"},
-    algoTypeButtonText: {kCenter: "K-Center", kMedian: "K-Median", lloyd: "lloyd-kmeans"},
+    algoTypeButtonClassEnum: {kCenter: "btn btn-primary", centerOfGravity: "btn btn-success", lloyd: "btn btn-info"},
+    algoTypeButtonText: {kCenter: "K-Center", centerOfGravity: "Center Of Gravity", lloyd: "lloyd"},
 
     getUIreferences: async function () {
         return new Promise((resolve, reject) => {
@@ -63,10 +63,10 @@ UIManagement = {
 
 	algoTypeManagementClick: () => {
 		if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.kCenter) {
-			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.kMedian;
-			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.kMedian;
-			UIManagement.selectedAlgoType = "kMedian";
-		} else if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.kMedian) {
+			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.centerOfGravity;
+			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.centerOfGravity;
+			UIManagement.selectedAlgoType = "centerOfGravity";
+		} else if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.centerOfGravity) {
 			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.lloyd;
 			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.lloyd;
 			UIManagement.selectedAlgoType = "lloyd-kmeans";
@@ -95,8 +95,8 @@ UIManagement = {
                 ElementsManagement.centersNumber = result.value;
 
                 switch (UIManagement.selectedAlgoType) {
-					case "kMedian":
-						approxWithKMedianAlgorithm();
+					case "centerOfGravity":
+						approxWithCenterOfGravityAlgorithm();
 						// approxWithoutRAlgorithm();
 						break;
                     case 'lloyd-kmeans':

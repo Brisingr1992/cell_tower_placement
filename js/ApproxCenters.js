@@ -340,7 +340,7 @@ function handleClusterMaking(allCities, centersNumber) {
 	return findDisconnectedGraphs(aSortedMST);
 }
 
-function generateWeightedMedianCenters(aCityClusters) {
+function generateWeightedCoGCenters(aCityClusters) {
 	let aAllCities = ElementsManagement.cities;
 
 	aCityClusters.forEach(aCluster=>{
@@ -362,13 +362,13 @@ function generateWeightedMedianCenters(aCityClusters) {
 	});
 }
 
-function approxWithKMedianAlgorithm() {
+function approxWithCenterOfGravityAlgorithm() {
 	ElementsManagement.algorithmCenters.length = 0;
 	let centersNumber = ElementsManagement.centersNumber;
 	let allCities = ElementsManagement.cities;
 
 	let aCityClusters = handleClusterMaking(allCities, centersNumber);
-	generateWeightedMedianCenters(aCityClusters)
+	generateWeightedCoGCenters(aCityClusters)
 
 }
 
