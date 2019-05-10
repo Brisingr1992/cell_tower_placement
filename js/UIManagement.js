@@ -14,7 +14,7 @@ UIManagement = {
     modeButtonClassEnum: {city: "btn btn-light", arbCenter: "btn btn-success", algCenter: "btn btn-danger"},
     modeButtonText: {city: "City mode", arbCenter: "Arb.Center mode", algCenter: "Alg.Center mode"},
     algoTypeButtonClassEnum: {kCenter: "btn btn-primary", centerOfGravity: "btn btn-success", lloyd: "btn btn-info"},
-    algoTypeButtonText: {kCenter: "K-Center", centerOfGravity: "Center Of Gravity", lloyd: "lloyd"},
+    algoTypeButtonText: {kCenter: "K-Center", centerOfGravity: "Center Of Gravity", lloyd: "lloyd-kmeans"},
 
     getUIreferences: async function () {
         return new Promise((resolve, reject) => {
