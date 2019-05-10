@@ -13,8 +13,8 @@ UIManagement = {
     showingAlert: false,
     modeButtonClassEnum: {city: "btn btn-light", arbCenter: "btn btn-success", algCenter: "btn btn-danger"},
     modeButtonText: {city: "City mode", arbCenter: "Arb.Center mode", algCenter: "Alg.Center mode"},
-    algoTypeButtonClassEnum: {kCenter: "btn btn-primary", centerOfGravity: "btn btn-success", lloyd: "btn btn-info"},
-    algoTypeButtonText: {kCenter: "K-Center", centerOfGravity: "Center Of Gravity", lloyd: "lloyd-kmeans"},
+    algoTypeButtonClassEnum: {kCenter: "btn btn-primary", centerOfGravity: "btn btn-success", lloyd: "btn btn-info", simpleMedian:"btn btn-light"},
+    algoTypeButtonText: {kCenter: "K-Center", centerOfGravity: "Center Of Gravity", lloyd: "lloyd-kmeans", simpleMedian: "Simple Median"},
 
     getUIreferences: async function () {
         return new Promise((resolve, reject) => {
@@ -67,6 +67,10 @@ UIManagement = {
 			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.centerOfGravity;
 			UIManagement.selectedAlgoType = "centerOfGravity";
 		} else if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.centerOfGravity) {
+			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.simpleMedian;
+			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.simpleMedian;
+			UIManagement.selectedAlgoType = "simpleMedian";
+		} else if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.simpleMedian) {
 			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.lloyd;
 			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.lloyd;
 			UIManagement.selectedAlgoType = "lloyd-kmeans";
@@ -97,6 +101,9 @@ UIManagement = {
                 switch (UIManagement.selectedAlgoType) {
 					case "centerOfGravity":
 						approxWithCenterOfGravityAlgorithm();
+						break;
+					case "simpleMedian":
+						approxWithSimpleMedianAlgorithm();
 						break;
                     case 'lloyd-kmeans':
                         approxWithLloydAlgorithm();

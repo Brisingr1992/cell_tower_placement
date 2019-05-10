@@ -389,3 +389,77 @@ function approxWithLloydAlgorithm() {
     return point;
   });
 }
+
+function approxWithSimpleMedianAlgorithm() {
+	ElementsManagement.algorithmCenters.length = 0;
+	let centersNumber = ElementsManagement.centersNumber;
+	let allCities = ElementsManagement.cities;
+
+	let sites_x = allCities.map(city => city.x);
+	let sites_y = allCities.map(city => city.y);
+	let cluster = kmeans([sites_x, sites_y], centersNumber);
+	let data = cluster.predict();
+
+	let aCentroids = data.centroids.map(point => {return {x:point[0], y:point[1]}});
+
+	let aNearestCenters = findNearestCenters(aCentroids);
+	let aNodeClusters = findClustersFromCentroids(aNearestCenters);
+
+	generateCentersSimpleMedianAlgorithm(aNodeClusters);
+}
+
+function findClustersFromCentroids(aNearestCenters) {
+	let oClusters = {};
+	aNearestCenters.forEach((oData, iIndex)=>{
+		let sCenterKey = oData.center[0]+""+oData.center[1];
+		if(oClusters[sCenterKey]){
+			oClusters[sCenterKey].push(iIndex);
+		}else{
+			oClusters[sCenterKey] = [iIndex];
+		}
+	})
+
+	return Object.values(oClusters);
+}
+
+function generateCentersSimpleMedianAlgorithm(aCityClusters) {
+	let aAllCities = ElementsManagement.cities;
+
+	aCityClusters.forEach(aCluster => {
+		let iSumP = 0;
+		aCluster.forEach(sCity => {
+			let oCityData = aAllCities[Number(sCity)];
+			iSumP += oCityData.population;
+		});
+		let medianSumP = (iSumP + 1) / 2;
+
+		//To find X co-ordinate of centroid;
+		let aSortedByX = aCluster.sort((a, b) => aAllCities[Number(a)].x - aAllCities[Number(b)].x);
+		let centerX = 0;
+		let popComparator = 0;
+		for(let sCity of aSortedByX){
+			let oCityData = aAllCities[Number(sCity)];
+			popComparator += oCityData.population;
+			if (popComparator >= medianSumP) {
+				centerX = oCityData.x;
+				break;
+			}
+		}
+
+		//To find Y co-ordinate of centroid;
+		let aSortedByY = aCluster.sort((a, b) => aAllCities[Number(a)].y - aAllCities[Number(b)].y);
+		let centerY = 0;
+		popComparator = 0;
+		for(let sCity of aSortedByY){
+			let oCityData = aAllCities[Number(sCity)];
+			popComparator += oCityData.population;
+			if (popComparator >= medianSumP) {
+				centerY = oCityData.y;
+				break;
+			}
+		}
+
+		let newCenter = ElementsManagement.addAlgorithmCenter(centerX, centerY);
+		newCenter.display();
+	});
+}
