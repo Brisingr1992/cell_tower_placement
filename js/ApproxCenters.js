@@ -198,7 +198,7 @@ function approxWithoutRAlgorithm() {
   }
 }
  
-function findNearestCenters(arrayCenters){
+function findNearestCenters(arrayCenters) {
   let nearestCenter = [];
   let distFromCenters = [];
   let check = false;
@@ -382,5 +382,10 @@ function approxWithLloydAlgorithm() {
   let cluster = kmeans([sites_x, sites_y], centersNumber);
   let data = cluster.predict();
 
-  data.centroids.map(point => ElementsManagement.addAlgorithmCenter(point[0], point[1]));
+  data.centroids.map(point => {
+    let newCenter = ElementsManagement.addAlgorithmCenter(point[0], point[1]);
+    newCenter.display();
+
+    return point;
+  });
 }
