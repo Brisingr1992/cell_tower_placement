@@ -371,3 +371,16 @@ function approxWithKMedianAlgorithm() {
 	generateWeightedMedianCenters(aCityClusters)
 
 }
+
+function approxWithLloydAlgorithm() {
+  ElementsManagement.algorithmCenters.length = 0;
+	let centersNumber = ElementsManagement.centersNumber;
+  let allCities = ElementsManagement.cities;
+
+  let sites_x = allCities.map(city => city.x);
+  let sites_y = allCities.map(city => city.y);
+  let cluster = kmeans([sites_x, sites_y], centersNumber);
+  let data = cluster.predict();
+
+  data.centroids.map(point => ElementsManagement.addAlgorithmCenter(point[0], point[1]));
+}

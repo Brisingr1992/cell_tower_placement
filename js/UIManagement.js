@@ -13,8 +13,8 @@ UIManagement = {
     showingAlert: false,
     modeButtonClassEnum: {city: "btn btn-light", arbCenter: "btn btn-success", algCenter: "btn btn-danger"},
     modeButtonText: {city: "City mode", arbCenter: "Arb.Center mode", algCenter: "Alg.Center mode"},
-    algoTypeButtonClassEnum: {kCenter: "btn btn-primary", kMedian: "btn btn-success", voronoi: "btn btn-danger"},
-    algoTypeButtonText: {kCenter: "K-Center", kMedian: "K-Median", voronoi: "Voronoi"},
+    algoTypeButtonClassEnum: {kCenter: "btn btn-primary", kMedian: "btn btn-success", lloyd: "btn btn-info"},
+    algoTypeButtonText: {kCenter: "K-Center", kMedian: "K-Median", lloyd: "lloyd"},
 
     getUIreferences: async function () {
         return new Promise((resolve, reject) => {
@@ -67,9 +67,9 @@ UIManagement = {
 			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.kMedian;
 			UIManagement.selectedAlgoType = "kMedian";
 		} else if (UIManagement.algoTypeButton[0].className == UIManagement.algoTypeButtonClassEnum.kMedian) {
-			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.voronoi;
-			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.voronoi;
-			UIManagement.selectedAlgoType = "voronoi";
+			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.lloyd;
+			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.lloyd;
+			UIManagement.selectedAlgoType = "lloyd-kmeans";
 		} else {
 			UIManagement.algoTypeButton[0].className = UIManagement.algoTypeButtonClassEnum.kCenter;
 			UIManagement.algoTypeButton[0].textContent = UIManagement.algoTypeButtonText.kCenter;
@@ -99,7 +99,9 @@ UIManagement = {
 						approxWithKMedianAlgorithm();
 						// approxWithoutRAlgorithm();
 						break;
-
+                    case 'lloyd-kmeans':
+                        approxWithLloydAlgorithm();
+                        break;
 					default:
 						approxWithoutRAlgorithm();
 
